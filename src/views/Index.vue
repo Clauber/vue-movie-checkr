@@ -1,10 +1,16 @@
 <template>
   <div class="#index">
     <main-search @hasText="updateIsSearching($event)" />
-    <movie-list title="Popular Movies" :list="popular.results"></movie-list>
-    <movie-list title="Upcoming Movies" :list="upcoming.results"></movie-list>
-    <movie-list title="Now Playing" :list="nowPlaying.results"></movie-list>
-    Upcoming Movies Now Playing
+    <movie-list
+      v-if="isSearching"
+      title="Searching for..."
+      :list="searchResults.results"
+    ></movie-list>
+    <template v-else>
+      <movie-list title="Popular Movies" :list="popular.results"></movie-list>
+      <movie-list title="Upcoming Movies" :list="upcoming.results"></movie-list>
+      <movie-list title="Now Playing" :list="nowPlaying.results"></movie-list>
+    </template>
   </div>
 </template>
 
@@ -17,14 +23,19 @@ export default {
   components: { MainSearch, MovieList },
   data: () => ({
     isSearching: false,
+    searchKeyword: "",
     popular: [],
     upcoming: [],
     nowPlaying: [],
     searchResults: [],
   }),
   methods: {
-    updateIsSearching(value) {
-      this.isSearching = value;
+    updateIsSearching(isSearching) {
+      this.isSearching = isSearching.hasText;
+      if (isSearching.hasText) {
+        this.searchKeyword = isSearching.word;
+        this.getSearchResults();
+      }
     },
     getPopularMovies() {
       var vm = this;
@@ -56,11 +67,11 @@ export default {
           vm.nowPlaying = response.data;
         });
     },
-    getSearchResults(keyWord) {
+    getSearchResults() {
       var vm = this;
       axios
         .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_MOVIEDB_API_KEY}&query=${keyWord}&page=1`
+          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_MOVIEDB_API_KEY}&query=${this.searchKeyword}&page=1`
         )
         .then((response) => {
           vm.searchResults = response.data;
@@ -68,7 +79,6 @@ export default {
     },
   },
   created() {
-    console.log("process.env", process.env);
     this.getPopularMovies();
     this.getUpcomingMovies();
     this.getNowPlaying();
