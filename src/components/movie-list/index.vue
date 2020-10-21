@@ -1,7 +1,7 @@
 <template>
   <div class="container movie-list movie-container">
     <h5 class="card-title">{{ title }}</h5>
-    <carousel :per-page="3" :mouse-drag="true">
+    <carousel :per-page="3" :mouse-drag="true" :navigationEnabled="true">
       <slide v-for="movie in list" :key="movie.key">
         <movie-item :movie="movie" />
       </slide>
@@ -24,14 +24,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.movie-container {
-  margin: 20px auto;
-  text-align: center;
-  padding: 20px 55px;
-  background: #ffffffba;
-  border-radius: 25px;
-  align-items: center;
-}
-</style>
