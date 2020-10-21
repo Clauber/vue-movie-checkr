@@ -1,3 +1,4 @@
 module.exports = {
-  publicPath: "/vue-movie-checkr/",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/vue-movie-checkr/" : "/",
 };
