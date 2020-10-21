@@ -23,6 +23,6 @@ git add -A
 git commit -m 'deploy'
 
 # deploy
-git push -f git@github.com:clauber/vue-movie-checkr.git gh-pages
+git push -f git@github.com:clauber/vue-movie-checkr.git master:gh-pages
 
 cd -

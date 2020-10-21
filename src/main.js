@@ -15,7 +15,7 @@ Vue.config.productionTip = false;
  */
 Vue.use(VueRouter);
 const router = new VueRouter({
-  base: "/",
+  base: process.env.NODE_ENV === "production" ? "/vue-movie-checkr/" : "/",
   mode: "history",
   routes: routes,
 });
